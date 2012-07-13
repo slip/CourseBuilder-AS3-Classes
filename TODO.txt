@@ -1,0 +1,13 @@
+instead of using this.parent as MovieClip, fire events from the children and listen for them in the parent.
+
+update to greensock v12
+
+change switch statements to hash maps objects // no longer sure what i meant by this
+
+test cmi.interactions in the post test.
+
+use SCORM.isAvailable in the framework rather than checking for the external interface
+
+set completion status immediately in wrapper (or index.html)
+
+test and consider using rustici's new LMS files
