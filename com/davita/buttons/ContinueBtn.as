@@ -11,6 +11,9 @@ package com.davita.buttons
 	public class ContinueButton extends CourseButton
 	{
 		public var isEnabled:Boolean = new Boolean;
+		/*
+			TODO change _myParent to findCourseSwf()
+		*/
 		public var _myParent:MovieClip;
 		
 		public function ContinueButton()

@@ -10,6 +10,10 @@ package com.davita.buttons
 
 	public class CourseEnded extends MovieClip
 	{
+		/*
+			TODO change _myParent to findCourseSwf() function 
+			{ use the same method as findWrapper()}
+		*/
 		var _myParent:Object;
 		var completeMethod:String = "LMSSetComplete";		
 		

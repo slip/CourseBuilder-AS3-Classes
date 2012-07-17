@@ -40,7 +40,7 @@ package com.davita.documents {
 		private var _background:Sprite = new Sprite();
 		private var _backgroundRemoved:Boolean = false;
 
-		public var _myParent:MovieClip;
+		private var __courseWrapper:Object;
 		public var animator:CBAnimator;
         public var console:Console = new Console();
 		
@@ -83,18 +83,37 @@ package com.davita.documents {
 		{
 			stage.align = StageAlign.TOP_LEFT;
 			removeEventListener(Event.ADDED_TO_STAGE, initialize);
-			if (this.parent.parent)
-			{
-				_myParent = parent.parent as MovieClip;	
-			}
-			
-			if (_myParent)
-			{
-				hasAudio = false;
-			}
-			
+
 			drawBackground();
 			maskPage();
+			
+			// find the wrapper and add listeners
+			var success:Boolean = findWrapper();
+			if(success)
+			{
+				//__courseWrapper.addEventListener(ScoreUpdatedEvent.SCORE_UPDATED, updateScore, false, 0, true);
+				this.hasAudio = false;
+				trace("CourseSwf::initialize(): wrapper found");
+			}
+						
+		}
+		
+		private function findWrapper():Boolean
+		{
+			var curParent:DisplayObjectContainer = this.parent;
+			while (curParent) 
+			{ 
+				if (curParent.hasOwnProperty("versionNumber") && curParent.hasOwnProperty("currentPage")) 
+				{ 
+					__courseWrapper = curParent;
+					trace("ScoreMarker:: found the wrapper");
+					return true;
+					// Object(curParent).loader.addEventListener("unload", dispose, false, 0, true); 
+				}
+				curParent = curParent.parent;
+			}
+			trace("ScoreMarker:: not in a wrapper");
+			return false;
 		}
 		
 		private function dealloc(event:Event):void
@@ -109,22 +128,18 @@ package com.davita.documents {
 		
 		public function gateCourse():void
 		{
-			if (_myParent)
+			if (__courseWrapper)
 			{
-				_myParent.setCourseAsGated();
+				__courseWrapper.setCourseAsGated();
 			}
 		}
 		
 		
 		public function openGate():void
 		{
-			if (_myParent)
+			if (__courseWrapper)
 			{
-				var name:String = "openGate";
-				if (name in _myParent)
-					{
-						_myParent.openGate();
-					}
+				__courseWrapper.openGate();
 			}
 		}
 		
