@@ -69,17 +69,17 @@ package com.davita.nocturnal
 
         
         // Census Lead Functions
-        private function censusSetup():void
+        public function censusSetup():void
         {
 			trace("Census::censusSetup()");
-            this.addEventListener(MouseEvent.MOUSE_OVER, censusRollOver);
+            this.addEventListener(MouseEvent.ROLL_OVER, onCensusRollOver);
             this.buttonMode = true;
             this.useHandCursor = true;
             restrictScore2oneClick = false;
             restrict2oneHintDeduction = false;
         }
         
-        private function setState(state:String):void
+        public function setState(state:String):void
         {
 			trace("Census::setState("+state+")");
             this._censusState = state;
@@ -88,7 +88,7 @@ package com.davita.nocturnal
         private function onCensusClick(event:MouseEvent):void
         {
 			trace("Census::onCensusClick("+event+")");
-            switch (state)
+            switch (_censusState)
             {
                 case "Pg16" :
                     this.gotoAndStop("Pg16");
