@@ -58,12 +58,12 @@ package com.davita.nocturnal
                 if (curParent.hasOwnProperty("varPoints")) 
                 { 
                     __gameFile = curParent;
-                    trace("ScoreMarker:: found the gameFile");
+					trace("Census::findGameFile():gamefile found");
                     return true;
                 }
                 curParent = curParent.parent;
             }
-            trace("ScoreMarker:: not in a wrapper");
+			trace("Census::findGameFile():gamefille not found");
             return false;
         }
 
@@ -87,7 +87,7 @@ package com.davita.nocturnal
         
         private function onCensusClick(event:MouseEvent):void
         {
-			trace("Census::onCensusClick("+event+")");
+			trace("Census::onCensusClick(CLICK)");
             switch (_censusState)
             {
                 case "Pg16" :
@@ -117,6 +117,7 @@ package com.davita.nocturnal
 
         private function onCensusRollOver(event:MouseEvent):void
         {
+			trace("Census::onCensusRollOver(ROLL_OVER)");
             this.gotoAndStop(2);
         }
 
