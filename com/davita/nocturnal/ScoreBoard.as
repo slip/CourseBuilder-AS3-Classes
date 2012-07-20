@@ -2,10 +2,7 @@ package com.davita.nocturnal
 {
 	import flash.display.*;
 	import flash.events.*;
-	import flash.utils.Timer;
-	import flash.utils.getTimer;
-	import flash.events.TimerEvent;
-	import flash.media.Sound;
+	import com.greensock.TweenLite;
 	/**
 	 * ...
 	 * @author Ian Kennedy
@@ -16,8 +13,7 @@ package com.davita.nocturnal
 		//---------------------------------------
 		// PRIVATE VARIABLES
 		//---------------------------------------
-        
-        private var _ScoreBoardState:String;
+        private var _isOpen:Boolean = false;
         private var __gameFile:Object;
         
 		//---------------------------------------
@@ -39,15 +35,15 @@ package com.davita.nocturnal
 		// GETTER / SETTERS
 		//---------------------------------------
 		
-		public function get ScoreBoardState():String
+		public function set isOpen(value:Boolean):void
 		{
-			return _ScoreBoardState;
+			trace("ScoreBoard::set isOpen("+value+")");
+			_isOpen = value;
 		}
 		
-		public function set ScoreBoardState(value:String):void
+		public function get isOpen():Boolean
 		{
-			trace("ScoreBoard::set ScoreBoardState()");
-			_ScoreBoardState = value;
+			return _isOpen;
 		}
 		
 		//---------------------------------------
@@ -58,6 +54,8 @@ package com.davita.nocturnal
 			trace("ScoreBoard::init()");
 			this.stop();
 			removeEventListener(Event.ADDED_TO_STAGE,init);
+			
+			// find CourseFileNocturnalGame
 			var success:Boolean = findGameFile();
 			if(success)
 			{
@@ -79,25 +77,40 @@ package com.davita.nocturnal
                 }
                 curParent = curParent.parent;
             }
-			trace("ScoreBoard::findGameFile():gamefille not found");
+			trace("ScoreBoard::findGameFile():gamefile not found");
             return false;
         }
-
         
-        // ScoreBoard Lead Functions
-        public function ScoreBoardSetup():void
-        {
-			trace("ScoreBoard::ScoreBoardSetup()");
-            this.addEventListener(MouseEvent.ROLL_OVER, onScoreBoardRollOver);
-            this.buttonMode = true;
-            this.useHandCursor = true;
-            restrictScore2oneClick = false;
-            restrict2oneHintDeduction = false;
-        }
-        
+		private function openScoreBoard():void
+		{
+			trace("ScoreBoard::openScoreBoard()");
+			this.isOpen = true;
+			TweenLite.to(this, 1, {x:"+100"});
+		}
+		
+		private function closeScoreBoard():void
+		{
+			trace("ScoreBoard::closeScoreBoard()");
+			this.isOpen = false;
+			TweenLite.to(this, 1, {x:"-100"});
+		}
+		
+		//---------------------------------------
+		// EVENT LISTENERS
+		//---------------------------------------
+		
         private function onScoreBoardClick(event:MouseEvent):void
         {
 			trace("ScoreBoard::onScoreBoardClick()");
+			if (this.isOpen)
+			{
+				closeScoreBoard();
+			}
+			else
+			{
+				openScoreBoard();
+			}
+			
         }
 
         private function onScoreBoardRollOver(event:MouseEvent):void
@@ -105,5 +118,18 @@ package com.davita.nocturnal
 			trace("ScoreBoard::onScoreBoardRollOver()");
         }
 
+		//---------------------------------------
+		// PUBLIC METHODS
+		//---------------------------------------
+        public function setup():void
+        {
+			trace("ScoreBoard::setup()");
+            this.addEventListener(MouseEvent.ROLL_OVER, onScoreBoardRollOver);
+
+			this.OpenSBtab.addEventListener(MouseEvent.CLICK, OpenSBbtn);
+			this.OpenSBtab.buttonMode = true;
+			this.OpenSBtab.useHandCursor = true;
+        }
+		
 	}
 }
