@@ -41,6 +41,7 @@ package com.davita.nocturnal
 		private function init(e:Event=null):void
 		{
 			trace("Census::init()");
+			this.stop();
 			removeEventListener(Event.ADDED_TO_STAGE,init);
 			var success:Boolean = findGameFile();
 			if(success)
@@ -87,18 +88,9 @@ package com.davita.nocturnal
         
         private function onCensusClick(event:MouseEvent):void
         {
-			trace("Census::onCensusClick(CLICK)");
-            switch (_censusState)
-            {
-                case "Pg16" :
-                    this.gotoAndStop("Pg16");
-                    break;
-                case "Pg17" :
-                    this.gotoAndStop("Pg17");
-                    break;
-                default :
-                    trace("Census Page numbers not properly setup");
-            }
+			trace("Census::onCensusClick(CLICK):_censusState = " + _censusState);
+			
+			this.gotoAndStop(_censusState);
             
             if (__gameFile.restrict2oneHintDeduction == false)
             {
@@ -113,19 +105,12 @@ package com.davita.nocturnal
                 __gameFile.restrict2oneHintDeduction = true;
             }
         }
-        
 
         private function onCensusRollOver(event:MouseEvent):void
         {
 			trace("Census::onCensusRollOver(ROLL_OVER)");
             this.gotoAndStop(2);
         }
-
-        /*
-        GameBoard_mc::GameBoard.as // another class with closeSB(); openSB; delayClose()
-        CensusLead_mc::Census.as
-        
-        */
 
         private function cencusClickTip(pageNum):void
         {
@@ -141,9 +126,6 @@ package com.davita.nocturnal
     
                 CloseSB();
             }
-    
         }
-
-        
 	}
 }
