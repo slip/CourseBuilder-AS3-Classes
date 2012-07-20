@@ -34,7 +34,22 @@ package com.davita.nocturnal
 				addEventListener(Event.ADDED_TO_STAGE,init);
 			}
 		}
-
+		
+		//---------------------------------------
+		// GETTER / SETTERS
+		//---------------------------------------
+		
+		public function get censusState():String
+		{
+			return _censusState;
+		}
+		
+		public function set censusState(value:String):void
+		{
+			trace("Census::set censusState()");
+			_censusState = value;
+		}
+		
 		//---------------------------------------
 		// PRIVATE METHODS
 		//---------------------------------------
@@ -80,12 +95,6 @@ package com.davita.nocturnal
             restrict2oneHintDeduction = false;
         }
         
-        public function setState(state:String):void
-        {
-			trace("Census::setState("+state+")");
-            this._censusState = state;
-        }
-        
         private function onCensusClick(event:MouseEvent):void
         {
 			trace("Census::onCensusClick(CLICK):_censusState = " + _censusState);
@@ -114,7 +123,7 @@ package com.davita.nocturnal
 
         private function cencusClickTip(pageNum):void
         {
-    
+    		trace("Census::cencusClickTip()");
             this.GameBoard_mc.txtPoints.textColor = 0xFF0000;
             var closeSBTimer:Timer = new Timer(3000,1);
             closeSBTimer.addEventListener(TimerEvent.TIMER, delayClose);
