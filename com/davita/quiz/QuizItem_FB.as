@@ -33,7 +33,7 @@ package com.davita.quiz
 		public static const ANSWERED_CORRECTLY = 1;
 		public static const ANSWERED_INCORRECTLY = 2;
 		
-		private var _parentQuiz:QuizCombined;
+		private var _parentQuiz:Object;
 		private var _blanks : Array = new Array();
 		private var _numOfRequiredLetters : int;
 		private var _correctAnswers : int;
@@ -64,9 +64,32 @@ package com.davita.quiz
 			checkAnswersBtn.enabled = false;
 			setButtonText("Type answers");
 			checkAnswersBtn.addEventListener(MouseEvent.CLICK, checkAnswersBtnClicked);
-			_parentQuiz = (this.parent as QuizCombined);
+			// find the quiz
+			var success:Boolean = findQuiz();
+			if(success)
+			{
+				trace("QuizItem_FB::init()");
+			}
 		}
-
+		
+		private function findQuiz():Boolean
+		{
+			var curParent:DisplayObjectContainer = this.parent;
+			while (curParent) 
+			{ 
+				if (curParent.hasOwnProperty("imTheQuiz")) 
+				{ 
+					_parentQuiz = curParent;
+					trace("QuizItem_MC::findQuiz():Quiz Found");
+					return true;
+				}
+				curParent = curParent.parent;
+			}
+			trace("QuizItem_MC::findQuiz():Quiz Not Found");
+			return false;
+		}
+		
+		
 		/* ================================== */
 		/* = adding answers to the quizItem = */
 		/* ================================== */

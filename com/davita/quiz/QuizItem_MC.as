@@ -33,7 +33,7 @@ package com.davita.quiz
 		public static const ANSWERED_CORRECTLY = 1;
 		public static const ANSWERED_INCORRECTLY = 2;
 		
-		private var _parentQuiz:QuizCombined;
+		private var _parentQuiz:Object;
 		private var _question:String;
 		private var _answers:Array = new Array();
 		private var _feedback:String;
@@ -70,8 +70,31 @@ package com.davita.quiz
 			setButtonText("Choose answer");
 			checkAnswersBtn.enabled = false;
 			checkAnswersBtn.addEventListener(MouseEvent.CLICK, checkAnswersBtnClicked);
-			_parentQuiz = (this.parent as QuizCombined);
+			// find the quiz
+			var success:Boolean = findQuiz();
+			if(success)
+			{
+				trace("QuizItem_MC::init()");
+			}
 		}
+		
+		private function findQuiz():Boolean
+		{
+			var curParent:DisplayObjectContainer = this.parent;
+			while (curParent) 
+			{ 
+				if (curParent.hasOwnProperty("imTheQuiz")) 
+				{ 
+					_parentQuiz = curParent;
+					trace("QuizItem_MC::findQuiz():Quiz Found");
+					return true;
+				}
+				curParent = curParent.parent;
+			}
+			trace("QuizItem_MC::findQuiz():Quiz Not Found");
+			return false;
+		}
+		
 		
 		/**
 		 *	sets one or two allowed tries based on the number of answers
@@ -290,6 +313,7 @@ package com.davita.quiz
 		 */
 		private function checkAnswersBtnClicked(event:MouseEvent):void 
 		{
+			trace("QuizItem_MC::checkAnswersBtnClicked()");
 			switch (checkAnswersBtn.label){
 				case "Check Answer" :
 					// break out if there is a bad answer
@@ -298,7 +322,8 @@ package com.davita.quiz
 				break;
 				case "Continue" :
 					// send score to quiz
-					sendScoreToQuiz();
+					/*sendScoreToQuiz();*/
+					_parentQuiz.scoreAndContinue(_answeredCorrectly);
 				break;
 			}
 		}
@@ -308,6 +333,7 @@ package com.davita.quiz
 		 */
 		private function sendScoreToQuiz():void 
 		{
+			trace("QuizItem_MC::sendScoreToQuiz("+_answeredCorrectly+")");
 			_parentQuiz.scoreAndContinue(_answeredCorrectly);
 		}
 		

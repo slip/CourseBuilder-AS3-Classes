@@ -5,6 +5,7 @@ The copyrights embodied in the content of this file are licensed under the BSD (
 package com.davita.quiz
 {
 	import flash.display.MovieClip;
+	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -46,7 +47,7 @@ package com.davita.quiz
 		public static const ANSWERED_CORRECTLY = 1;
 		public static const ANSWERED_INCORRECTLY = 2;
 		
-		private var _parentQuiz:QuizCombined;
+		private var _parentQuiz:Object;
 		private var _feedback:String;
 		private var _positiveFeedbackArray:Array;
 		
@@ -76,8 +77,13 @@ package com.davita.quiz
 			checkAnswersBtn.enabled = false;
 			setButtonText("Drag Answers");
 			checkAnswersBtn.addEventListener(MouseEvent.CLICK, checkAnswersBtnClicked);
-			_parentQuiz = (this.parent as QuizCombined);
 			
+			// find the quiz
+			var success:Boolean = findQuiz();
+			if(success)
+			{
+				trace("QuizItem_DD::init()");
+			}
 
 			// add event listeners to dragBoxes
 			for (var i:int = 1; i < totalQuestions + 1; i++)
@@ -86,7 +92,26 @@ package com.davita.quiz
 				this["dragBox" + i].addEventListener(MouseEvent.MOUSE_UP, mouseReleased);
 			}			
 		}
-
+		
+		
+		private function findQuiz():Boolean
+		{
+			var curParent:DisplayObjectContainer = this.parent;
+			while (curParent) 
+			{ 
+				if (curParent.hasOwnProperty("imTheQuiz")) 
+				{ 
+					_parentQuiz = curParent;
+					trace("QuizItem_MC::findQuiz():Quiz Found");
+					return true;
+				}
+				curParent = curParent.parent;
+			}
+			trace("QuizItem_MC::findQuiz():Quiz Not Found");
+			return false;
+		}
+		
+		
 		// loops over all items on the stage and 
 		// totals up the number of dropBoxes
 		private function getTotalQuestions():int
