@@ -19,7 +19,8 @@ package com.davita.nocturnal
         
         private var _censusState:String;
         private var __gameFile:Object;
-        
+		public var restrict2oneHintDeduction:Boolean;
+        public var restrictScore2oneClick:Boolean;
 		//---------------------------------------
 		// CONSTRUCTOR
 		//---------------------------------------
@@ -56,6 +57,7 @@ package com.davita.nocturnal
 		private function init(e:Event=null):void
 		{
 			trace("Census::init()");
+			findGameFile();
 			this.stop();
 			removeEventListener(Event.ADDED_TO_STAGE,init);
 			var success:Boolean = findGameFile();
@@ -124,17 +126,12 @@ package com.davita.nocturnal
         private function cencusClickTip(pageNum):void
         {
     		trace("Census::cencusClickTip()");
-            this.GameBoard_mc.txtPoints.textColor = 0xFF0000;
+            __gameFile.GameBoard_mc.txtPoints.textColor = 0xFF0000;
             var closeSBTimer:Timer = new Timer(3000,1);
-            closeSBTimer.addEventListener(TimerEvent.TIMER, delayClose);
+            /*closeSBTimer.addEventListener(TimerEvent.TIMER, delayClose);*/
             closeSBTimer.start();
             var wrongSound:Sound = new SFXidea();
             wrongSound.play();
-            function delayClose(e:TimerEvent)
-            {
-    
-                CloseSB();
-            }
         }
 	}
 }
