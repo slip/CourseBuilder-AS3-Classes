@@ -19,8 +19,7 @@ package com.davita.nocturnal
         
         private var _censusState:String;
         private var __gameFile:Object;
-		public var restrict2oneHintDeduction:Boolean;
-        public var restrictScore2oneClick:Boolean;
+
 		//---------------------------------------
 		// CONSTRUCTOR
 		//---------------------------------------
@@ -37,9 +36,8 @@ package com.davita.nocturnal
 		}
 		
 		//---------------------------------------
-		// GETTER / SETTERS
+		// ACCESSORS
 		//---------------------------------------
-		
 		public function get censusState():String
 		{
 			return _censusState;
@@ -47,7 +45,7 @@ package com.davita.nocturnal
 		
 		public function set censusState(value:String):void
 		{
-			trace("Census::set censusState()");
+			trace("Census::set censusState("+value+")");
 			_censusState = value;
 		}
 		
@@ -57,14 +55,20 @@ package com.davita.nocturnal
 		private function init(e:Event=null):void
 		{
 			trace("Census::init()");
-			findGameFile();
-			this.stop();
 			removeEventListener(Event.ADDED_TO_STAGE,init);
+
+			this.stop();
+            this.buttonMode = true;
+            this.useHandCursor = true;
+			
+			// find parent file
 			var success:Boolean = findGameFile();
 			if(success)
 			{
                 addEventListener(MouseEvent.ROLL_OVER, onCensusRollOver);
                 addEventListener(MouseEvent.CLICK, onCensusClick);
+	            __gameFile.restrictScore2oneClick = false;
+	            __gameFile.restrict2oneHintDeduction = false;
 			}
 		}
         
@@ -84,35 +88,26 @@ package com.davita.nocturnal
 			trace("Census::findGameFile():gamefille not found");
             return false;
         }
-
         
-        // Census Lead Functions
-        public function censusSetup():void
-        {
-			trace("Census::censusSetup()");
-            this.addEventListener(MouseEvent.ROLL_OVER, onCensusRollOver);
-            this.buttonMode = true;
-            this.useHandCursor = true;
-            restrictScore2oneClick = false;
-            restrict2oneHintDeduction = false;
-        }
-        
+		//---------------------------------------
+		// EVENT HANDLERS
+		//---------------------------------------
         private function onCensusClick(event:MouseEvent):void
         {
 			trace("Census::onCensusClick(CLICK):_censusState = " + _censusState);
-			
 			this.gotoAndStop(_censusState);
+            __gameFile.GameBoard_mc.txtPoints.textColor = 0xFF0000;
+            var wrongSound:Sound = new SFXidea();
+            wrongSound.play();
             
+			
             if (__gameFile.restrict2oneHintDeduction == false)
             {
-                trace("restrictScore2oneClick: False, deducting 5");
                 __gameFile.addPoints(-5);
                 __gameFile.restrict2oneHintDeduction = true;
             }
             else
-            {
-    
-                trace("restrictScore2oneClick: True, No Deduction");
+            {    
                 __gameFile.restrict2oneHintDeduction = true;
             }
         }
@@ -121,17 +116,6 @@ package com.davita.nocturnal
         {
 			trace("Census::onCensusRollOver(ROLL_OVER)");
             this.gotoAndStop(2);
-        }
-
-        private function cencusClickTip(pageNum):void
-        {
-    		trace("Census::cencusClickTip()");
-            __gameFile.GameBoard_mc.txtPoints.textColor = 0xFF0000;
-            var closeSBTimer:Timer = new Timer(3000,1);
-            /*closeSBTimer.addEventListener(TimerEvent.TIMER, delayClose);*/
-            closeSBTimer.start();
-            var wrongSound:Sound = new SFXidea();
-            wrongSound.play();
         }
 	}
 }
