@@ -4,8 +4,6 @@ package com.davita.nocturnal
 	import flash.display.MovieClip;
 	import flash.display.*;
 	import flash.events.*;
-	import com.greensock.TweenLite;
-	import com.greensock.TimelineLite;
 	import com.greensock.easing.*;
 	import com.greensock.plugins.*;
 	import com.greensock.*;
