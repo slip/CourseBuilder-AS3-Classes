@@ -34,21 +34,7 @@ package com.davita.nocturnal
 				addEventListener(Event.ADDED_TO_STAGE,init);
 			}
 		}
-		
-		//---------------------------------------
-		// ACCESSORS
-		//---------------------------------------
-		public function get censusState():String
-		{
-			return _censusState;
-		}
-		
-		public function set censusState(value:String):void
-		{
-			trace("Census::set censusState("+value+")");
-			_censusState = value;
-		}
-		
+				
 		//---------------------------------------
 		// PRIVATE METHODS
 		//---------------------------------------
@@ -77,7 +63,7 @@ package com.davita.nocturnal
             var curParent:DisplayObjectContainer = this.parent;
             while (curParent) 
             { 
-                if (curParent.hasOwnProperty("varPoints")) 
+                if (curParent.hasOwnProperty("points")) 
                 { 
                     __gameFile = curParent;
 					trace("Census::findGameFile():gamefile found");
@@ -85,7 +71,7 @@ package com.davita.nocturnal
                 }
                 curParent = curParent.parent;
             }
-			trace("Census::findGameFile():gamefille not found");
+			trace("Census::findGameFile():gamefile not found");
             return false;
         }
         
@@ -129,5 +115,20 @@ package com.davita.nocturnal
         {
         	gotoAndStop(1);
         }
+
+		//---------------------------------------
+		// ACCESSORS
+		//---------------------------------------
+		public function get censusState():String
+		{
+			return _censusState;
+		}
+		
+		public function set censusState(value:String):void
+		{
+			trace("Census::set censusState("+value+")");
+			_censusState = value;
+		}
+
 	}
 }
