@@ -31,21 +31,7 @@ package com.davita.nocturnal
 			}
 		}
 		
-		//---------------------------------------
-		// GETTER / SETTERS
-		//---------------------------------------
-		
-		public function set isOpen(value:Boolean):void
-		{
-			trace("ScoreBoard::set isOpen("+value+")");
-			_isOpen = value;
-		}
-		
-		public function get isOpen():Boolean
-		{
-			return _isOpen;
-		}
-		
+	
 		//---------------------------------------
 		// PRIVATE METHODS
 		//---------------------------------------
@@ -81,20 +67,35 @@ package com.davita.nocturnal
             return false;
         }
         
-		private function openScoreBoard():void
+		public function open():void
 		{
 			trace("ScoreBoard::openScoreBoard()");
 			this.isOpen = true;
-			TweenLite.to(this, 1, {x:"+100"});
+			TweenLite.to(this, 1, {x:-130});
 		}
 		
-		private function closeScoreBoard():void
+		public function close():void
 		{
 			trace("ScoreBoard::closeScoreBoard()");
 			this.isOpen = false;
-			TweenLite.to(this, 1, {x:"-100"});
+			TweenLite.to(this, 1, {x:-225});
+		}
+
+		//---------------------------------------
+		// GETTER / SETTERS
+		//---------------------------------------
+		
+		public function set isOpen(value:Boolean):void
+		{
+			trace("ScoreBoard::set isOpen("+value+")");
+			_isOpen = value;
 		}
 		
+		public function get isOpen():Boolean
+		{
+			return _isOpen;
+		}
+			
 		//---------------------------------------
 		// EVENT LISTENERS
 		//---------------------------------------
@@ -104,11 +105,11 @@ package com.davita.nocturnal
 			trace("ScoreBoard::onScoreBoardClick()");
 			if (this.isOpen)
 			{
-				closeScoreBoard();
+				this.close();
 			}
 			else
 			{
-				openScoreBoard();
+				this.open();
 			}
 			
         }
@@ -126,7 +127,7 @@ package com.davita.nocturnal
 			trace("ScoreBoard::setup()");
             this.addEventListener(MouseEvent.ROLL_OVER, onScoreBoardRollOver);
 
-			this.OpenSBtab.addEventListener(MouseEvent.CLICK, OpenSBbtn);
+//			this.OpenSBtab.addEventListener(MouseEvent.CLICK, OpenSBbtn);
 			this.OpenSBtab.buttonMode = true;
 			this.OpenSBtab.useHandCursor = true;
         }
