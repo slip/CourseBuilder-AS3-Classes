@@ -96,7 +96,7 @@ package com.davita.nocturnal
         {
 			trace("Census::onCensusClick(CLICK):_censusState = " + _censusState);
 			this.gotoAndStop(_censusState);
-            __gameFile.GameBoard_mc.txtPoints.textColor = 0xFF0000;
+            __gameFile.scoreBoard_mc.txtPoints.textColor = 0xFF0000;
             var wrongSound:Sound = new SFXidea();
             wrongSound.play();
             
@@ -116,6 +116,18 @@ package com.davita.nocturnal
         {
 			trace("Census::onCensusRollOver(ROLL_OVER)");
             this.gotoAndStop(2);
+        }
+
+        public function timedReturn( delayTime:int )
+        {
+        	var resetCensusTimer:Timer = new Timer(delayTime,1);
+			resetCensusTimer.addEventListener(TimerEvent.TIMER, reset);
+			resetCensusTimer.start();
+        }
+
+        public function reset( e:TimerEvent )
+        {
+        	gotoAndStop(1);
         }
 	}
 }
