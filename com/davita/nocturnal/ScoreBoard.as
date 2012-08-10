@@ -56,7 +56,7 @@ package com.davita.nocturnal
             var curParent:DisplayObjectContainer = this.parent;
             while (curParent) 
             { 
-                if (curParent.hasOwnProperty("varPoints")) 
+                if (curParent.hasOwnProperty("points")) 
                 { 
                     __gameFile = curParent;
 					trace("ScoreBoard::findGameFile():gamefile found");
