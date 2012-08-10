@@ -2,6 +2,7 @@ package com.davita.nocturnal
 {
 	import flash.display.*;
 	import flash.events.*;
+	import flash.utils.Timer;
 	import com.greensock.TweenLite;
 	/**
 	 * ...
@@ -81,6 +82,13 @@ package com.davita.nocturnal
 			TweenLite.to(this, 1, {x:-225});
 		}
 
+		public function delayClose( seconds:int )
+		{
+			var myTimer:Timer = new Timer(seconds * 1000,1);
+			myTimer.addEventListener(TimerEvent.TIMER, close);
+			myTimer.start();
+		}
+
 		//---------------------------------------
 		// GETTER / SETTERS
 		//---------------------------------------
@@ -122,15 +130,7 @@ package com.davita.nocturnal
 		//---------------------------------------
 		// PUBLIC METHODS
 		//---------------------------------------
-        public function setup():void
-        {
-			trace("ScoreBoard::setup()");
-            this.addEventListener(MouseEvent.ROLL_OVER, onScoreBoardRollOver);
 
-//			this.OpenSBtab.addEventListener(MouseEvent.CLICK, OpenSBbtn);
-			this.OpenSBtab.buttonMode = true;
-			this.OpenSBtab.useHandCursor = true;
-        }
 		
 	}
 }
