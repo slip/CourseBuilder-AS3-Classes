@@ -81,27 +81,32 @@ package com.davita.nocturnal
 			trace("Instructions::findGameFile():gamefile not found");
             return false;
         }
-        
-		private function open(event:MouseEvent):void
+
+		//---------------------------------------
+		// PUBLIC METHODS
+		//---------------------------------------
+		public function open():void
 		{
 			trace("Instructions::openInstructions()");
 			this.isOpen = true;
 			var timeline:TimelineLite = new TimelineLite();
-			timeline.append( new TweenLite(background, 1, {autoAlpha:1}) );
-			timeline.append( new TweenLite(instructionsText, 1, {autoAlpha:1}) );
-			timeline.append( new TweenLite(instructionsCloseBtn, 1, {autoAlpha:1}) );
+			timeline.append( new TweenLite(instructionsIcon, .1, {autoAlpha:0}));
+			timeline.append( new TweenLite(background, 1, {autoAlpha:1}));
+			timeline.append( new TweenLite(instructionsText, 1, {autoAlpha:1}));
+			timeline.append( new TweenLite(instructionsCloseBtn, 1, {autoAlpha:1}));
 		}
 		
-		private function close(event:MouseEvent):void
+		public function close():void
 		{
 			trace("Instructions::closeInstructions()");
 			this.isOpen = false;
-			var timeline:TimelineLite = new TimelineLite({onComplete:returnToStart});
-			timeline.append( new TweenLite(instructionsCloseBtn, .25, {autoAlpha:0}) );
-			timeline.append( new TweenLite(instructionsText, 1, {autoAlpha:0}) );
+			var timeline:TimelineLite = new TimelineLite();
+			timeline.append( new TweenLite(instructionsCloseBtn, .25, {autoAlpha:0}));
+			timeline.append( new TweenLite(instructionsText, 1, {autoAlpha:0}));
 			timeline.append( new TweenLite(background, 1, {autoAlpha:0}) );
+			timeline.append( new TweenLite(instructionsIcon, .5, {autoAlpha:1}));
 		}
-
+        
 		//---------------------------------------
 		// GETTER / SETTERS
 		//---------------------------------------
@@ -124,13 +129,9 @@ package com.davita.nocturnal
         private function onInstructionsClick(event:MouseEvent):void
         {
 			trace("Instructions::onInstructionsClick()");
-			if (_isOpen) { this.close(event); }
-			else { this.open(event); }
+			if (_isOpen) { this.close(); }
+			else { this.open(); }
         }
-
-		//---------------------------------------
-		// PUBLIC METHODS
-		//---------------------------------------
 
 		//---------------------------------------
 		// ACCESSORS
