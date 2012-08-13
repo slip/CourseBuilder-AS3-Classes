@@ -30,6 +30,8 @@ package com.davita.quiz
 		public static const ANSWERED_CORRECTLY = 1;
 		public static const ANSWERED_INCORRECTLY = 2;
 		
+		public var imTheQuiz:String = "I'm the quiz.";
+		
         private var _quizType:String = "";
 		private var _quizQuestions:Array = new Array();
 		

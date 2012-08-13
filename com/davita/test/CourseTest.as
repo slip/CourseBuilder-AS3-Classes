@@ -43,8 +43,8 @@ package com.davita.test
 		private var passingScore:Number;
 		private var positiveFeedbackArray:Array = new Array("Great Job!", "That's right!", "Nicely answered!", "You got it!","You're a whiz!");
 		
-		public var myParent:MovieClip;
-				
+		public var __courseWrapper:Object;
+						
 		//--------------------------------------
 		//  CONSTRUCTOR
 		//--------------------------------------
@@ -60,9 +60,13 @@ package com.davita.test
 		private function init(event:Event):void
 		{
 			setUpFonts();
-			if (this.parent.parent != null)
+			
+			// find the wrapper and add listeners
+			var success:Boolean = findWrapper();
+			if(success)
 			{
-				myParent = parent.parent as MovieClip;
+				//__courseWrapper.addEventListener(ScoreUpdatedEvent.SCORE_UPDATED, updateScore, false, 0, true);
+				trace("CourseSwf::initialize(): wrapper found");
 			}
 			
 			// initial values
@@ -86,6 +90,24 @@ package com.davita.test
 			nextQuestionButton.visible = false;			
 			hideAllAnswers();			
 			
+		}
+		
+		private function findWrapper():Boolean
+		{
+			var curParent:DisplayObjectContainer = this.parent;
+			while (curParent) 
+			{ 
+				if (curParent.hasOwnProperty("versionNumber") && curParent.hasOwnProperty("currentPage")) 
+				{ 
+					__courseWrapper = curParent;
+					trace("CourseTest:: found the wrapper");
+					return true;
+					// Object(curParent).loader.addEventListener("unload", dispose, false, 0, true); 
+				}
+				curParent = curParent.parent;
+			}
+			trace("CourseTest:: not in a wrapper");
+			return false;
 		}
 		
 		private function setUpFonts():void

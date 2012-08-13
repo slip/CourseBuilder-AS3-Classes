@@ -106,13 +106,13 @@ package com.davita.documents {
 				if (curParent.hasOwnProperty("versionNumber") && curParent.hasOwnProperty("currentPage")) 
 				{ 
 					__courseWrapper = curParent;
-					trace("ScoreMarker:: found the wrapper");
+					trace("CourseSwf:: found the wrapper");
 					return true;
 					// Object(curParent).loader.addEventListener("unload", dispose, false, 0, true); 
 				}
 				curParent = curParent.parent;
 			}
-			trace("ScoreMarker:: not in a wrapper");
+			trace("CourseSwf:: not in a wrapper");
 			return false;
 		}
 		

@@ -19,7 +19,7 @@ package com.davita.nocturnal
         
         private var _censusState:String;
         private var __gameFile:Object;
-        
+
 		//---------------------------------------
 		// CONSTRUCTOR
 		//---------------------------------------
@@ -34,7 +34,7 @@ package com.davita.nocturnal
 				addEventListener(Event.ADDED_TO_STAGE,init);
 			}
 		}
-
+				
 		//---------------------------------------
 		// PRIVATE METHODS
 		//---------------------------------------
@@ -42,11 +42,19 @@ package com.davita.nocturnal
 		{
 			trace("Census::init()");
 			removeEventListener(Event.ADDED_TO_STAGE,init);
+
+			this.stop();
+            this.buttonMode = true;
+            this.useHandCursor = true;
+			
+			// find parent file
 			var success:Boolean = findGameFile();
 			if(success)
 			{
                 addEventListener(MouseEvent.ROLL_OVER, onCensusRollOver);
                 addEventListener(MouseEvent.CLICK, onCensusClick);
+	            __gameFile.restrictScore2oneClick = false;
+	            __gameFile.restrict2oneHintDeduction = false;
 			}
 		}
         
@@ -55,7 +63,7 @@ package com.davita.nocturnal
             var curParent:DisplayObjectContainer = this.parent;
             while (curParent) 
             { 
-                if (curParent.hasOwnProperty("varPoints")) 
+                if (curParent.hasOwnProperty("points")) 
                 { 
                     __gameFile = curParent;
 					trace("Census::findGameFile():gamefile found");
@@ -63,57 +71,32 @@ package com.davita.nocturnal
                 }
                 curParent = curParent.parent;
             }
-			trace("Census::findGameFile():gamefille not found");
+			trace("Census::findGameFile():gamefile not found");
             return false;
         }
-
         
-        // Census Lead Functions
-        public function censusSetup():void
-        {
-			trace("Census::censusSetup()");
-            this.addEventListener(MouseEvent.ROLL_OVER, onCensusRollOver);
-            this.buttonMode = true;
-            this.useHandCursor = true;
-            restrictScore2oneClick = false;
-            restrict2oneHintDeduction = false;
-        }
-        
-        public function setState(state:String):void
-        {
-			trace("Census::setState("+state+")");
-            this._censusState = state;
-        }
-        
+		//---------------------------------------
+		// EVENT HANDLERS
+		//---------------------------------------
         private function onCensusClick(event:MouseEvent):void
         {
-			trace("Census::onCensusClick(CLICK)");
-            switch (_censusState)
-            {
-                case "Pg16" :
-                    this.gotoAndStop("Pg16");
-                    break;
-                case "Pg17" :
-                    this.gotoAndStop("Pg17");
-                    break;
-                default :
-                    trace("Census Page numbers not properly setup");
-            }
+			trace("Census::onCensusClick(CLICK):_censusState = " + _censusState);
+			this.gotoAndStop(_censusState);
+            __gameFile.scoreBoard_mc.txtPoints.textColor = 0xFF0000;
+            var wrongSound:Sound = new SFXidea();
+            wrongSound.play();
             
+			
             if (__gameFile.restrict2oneHintDeduction == false)
             {
-                trace("restrictScore2oneClick: False, deducting 5");
                 __gameFile.addPoints(-5);
                 __gameFile.restrict2oneHintDeduction = true;
             }
             else
-            {
-    
-                trace("restrictScore2oneClick: True, No Deduction");
+            {    
                 __gameFile.restrict2oneHintDeduction = true;
             }
         }
-        
 
         private function onCensusRollOver(event:MouseEvent):void
         {
@@ -121,29 +104,31 @@ package com.davita.nocturnal
             this.gotoAndStop(2);
         }
 
-        /*
-        GameBoard_mc::GameBoard.as // another class with closeSB(); openSB; delayClose()
-        CensusLead_mc::Census.as
-        
-        */
-
-        private function cencusClickTip(pageNum):void
+        public function timedReturn( delayTime:int )
         {
-    
-            this.GameBoard_mc.txtPoints.textColor = 0xFF0000;
-            var closeSBTimer:Timer = new Timer(3000,1);
-            closeSBTimer.addEventListener(TimerEvent.TIMER, delayClose);
-            closeSBTimer.start();
-            var wrongSound:Sound = new SFXidea();
-            wrongSound.play();
-            function delayClose(e:TimerEvent)
-            {
-    
-                CloseSB();
-            }
-    
+        	var resetCensusTimer:Timer = new Timer(delayTime,1);
+			resetCensusTimer.addEventListener(TimerEvent.TIMER, reset);
+			resetCensusTimer.start();
         }
 
-        
+        public function reset( e:TimerEvent )
+        {
+        	gotoAndStop(1);
+        }
+
+		//---------------------------------------
+		// ACCESSORS
+		//---------------------------------------
+		public function get censusState():String
+		{
+			return _censusState;
+		}
+		
+		public function set censusState(value:String):void
+		{
+			trace("Census::set censusState("+value+")");
+			_censusState = value;
+		}
+
 	}
 }
