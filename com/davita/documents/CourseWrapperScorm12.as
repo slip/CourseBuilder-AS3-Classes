@@ -112,7 +112,11 @@ package com.davita.documents
 		private var queue:SWFLoader = new SWFLoader({name:"mainQueue", onProgress:progressHandler, onComplete:completeHandler, onError:errorHandler});
 		
 		// testing
-		var pagePath:String = "";
+		public var course:Object = {
+			lesson_status: "",
+			student_name: "",
+			student_id: ""
+		}
 		
 		/* =============== */
 		/* = Constructor = */
@@ -132,22 +136,50 @@ package com.davita.documents
 		private function init(event:Event):void
 		{	
 			
-			// testing
-			pagePath = ExternalInterface.call("window.location.href.toString");
-			trace("2004 pagePath: " + pagePath);
-			// end testing
+			success = scorm.connect();
+			console("scorm.connect(): " + success);
 			
-			if (pagePath != null)
-			{ 
-				success = scormInit(); 
-			}
-			else { success = true; }
+			if(success){
+		
+				//Set course variables
+				course.lesson_status = scorm.get("cmi.core.lesson_status");
+		
+				//If course has already been completed
+				if(course.lesson_status == "passed" || course.lesson_status == "completed"){
 			
-			if (!success)
-			{
+					console("You have already completed this course.");
+
+					//Disconnect from the LMS.
+					scorm.disconnect();
+			
+				} else {
+			
+					//Set course status to incomplete
+					success = scorm.set("cmi.core.lesson_status", "incomplete");
+					console("scorm.set('cmi.core.lesson_status', 'incomplete'): " +success);
+						
+					_bookmarkedPage = parseInt(scorm.get("cmi.core.lesson_location"));
+						
+					if(success){
+						scorm.save();
+					} else {
+						serverUnresponsive();
+					}
+					// --- Get SCORM data as needed -----
+			
+					course.student_id = scorm.get("cmi.core.student_id");
+					console("scorm.get('cmi.core.student_id'): " +course.student_id);
+			
+					course.student_name = scorm.get("cmi.core.student_name");
+					console("scorm.get('cmi.core.student_name'): " +course.student_name);
+				}		
+
+			} else {
+		
 				serverUnresponsive();
+		
 			}
-			
+
 			// load course.xml
 			xmlLoader.load(new URLRequest("course.xml"));
 			xmlLoader.addEventListener(Event.COMPLETE, xmlLoaded);
@@ -205,6 +237,11 @@ package com.davita.documents
 		{
 			trace("got a TestEvent");
 			trace(event.toString());
+		}
+
+		private function console(msg):void 
+		{
+			trace("CourseWrapperRW::console(): " + msg);
 		}
 		
 		/* ====================== */
@@ -595,10 +632,7 @@ package com.davita.documents
 		 */
 		private function closeCourse(event:MouseEvent):void
 		{
-			if (pagePath != null)
-			{
-				ExternalInterface.call("closeCourse");
-			}
+			ExternalInterface.call("closeCourse");
 		}
 		
 		//
@@ -887,32 +921,29 @@ package com.davita.documents
 		 */
 		public function LMSSetScore(score:Number, passingScore:Number):void
 		{
-			if (pagePath != null)
+			success = scorm.set("cmi.core.score.raw", score.toString());
+			if (success)
 			{
-				success = scorm.set("cmi.core.score.raw", score.toString());
-				if (success)
+				if (score < passingScore)
 				{
-					if (score < passingScore)
-					{
-						scorm.set("cmi.core.lesson_status", "failed");
-						scorm.disconnect();
-					}
-					else
-					{
-						scorm.set("cmi.core.lesson_status", "passed");
-						scorm.disconnect();
-					}
+					scorm.set("cmi.core.lesson_status", "failed");
+					scorm.disconnect();
 				}
 				else
 				{
-					serverUnresponsive();
+					scorm.set("cmi.core.lesson_status", "passed");
+					scorm.disconnect();
 				}
+			}
+			else
+			{
+				serverUnresponsive();
 			}
 		}
 		
-		private function serverUnresponsive():void {
-		    if (pagePath != null)
-			{ExternalInterface.call("alert", "We apologize for the problem you are experiencing trying to connect to the LMS. We suggest you try closing the course and re-launching it, if you continue to experience this problem please contact the IT HelpDesk at 888-782-8737.");}
+		private function serverUnresponsive():void 
+		{
+			ExternalInterface.call("alert", "We apologize for the problem you are experiencing trying to connect to the LMS. We suggest you try closing the course and re-launching it, if you continue to experience this problem please contact the IT HelpDesk at 888-782-8737.");
 		}
 	}
 }
