@@ -16,11 +16,9 @@ class CourseUpdater(object):
         pass
 
 files_to_keep = ["course.xml", "test.xml", "coursefiles"]
-cu = CourseUpdater("/Users/slip/Desktop/TST1001_NEW")
+cu = CourseUpdater("/Users/slip/Desktop/GAMETEST")
 
 for keeper in files_to_keep:
-    print "removing (%s)" % keeper
+    print "removing %s from %s" % (keeper, cu.course_files)
     cu.course_files.remove(keeper)
 
-for files_left in cu.course_files:
-    print files_left
