@@ -1,5 +1,4 @@
 from os import listdir
-from fnmatch import fnmatch
 
 
 class CourseUpdater(object):
@@ -16,8 +15,12 @@ class CourseUpdater(object):
     def addNewFiles(self):
         pass
 
+files_to_keep = ["course.xml", "test.xml", "coursefiles"]
 cu = CourseUpdater("/Users/slip/Desktop/TST1001_NEW")
-print len(cu.course_files)
-for course_file in cu.course_files:
-    if fnmatch(course_file, '*.xsd'):
-        print course_file
+
+for keeper in files_to_keep:
+    print "removing (%s)" % keeper
+    cu.course_files.remove(keeper)
+
+for files_left in cu.course_files:
+    print files_left
