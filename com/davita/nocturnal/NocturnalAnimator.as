@@ -33,28 +33,50 @@ package com.davita.nocturnal
 		// PUBLIC METHODS
 		//---------------------------------------
 
-		public function animateInVertically(theClip:MovieClip, delayTime:int = 0):void
+		public function animateInFromTop(theClip:MovieClip, delayTime:int = 0):void
 		{
 			var timeline:TimelineLite = new TimelineLite();
-			timeline.append(TweenLite.to(theClip, 1, {autoAlpha:1,y:"+150",delay:delayTime}));
+			timeline.append(TweenLite.from(theClip, 2, {y:"-150", alpha:0, delay:delayTime}));
 		}
 
-		public function animateOutVertically(theClip:MovieClip, delayTime:int = 0):void
+		public function animateOutFromTop(theClip:MovieClip, delayTime:int = 0):void
 		{
 			var timeline:TimelineLite = new TimelineLite();
-			timeline.append(TweenLite.to(theClip, 1, {autoAlpha:1,y:"-150",delay:delayTime}));
+			timeline.append(TweenLite.to(theClip, 1, {alpha:0, y:"-150", delay:delayTime}));
+		}		
+		public function animateInFromBottom(theClip:MovieClip, delayTime:int = 0):void
+		{
+			var timeline:TimelineLite = new TimelineLite();
+			timeline.append(TweenLite.from(theClip, 2, {y:"+150", alpha:0, delay:delayTime}));
+		}
+
+		public function animateOutFromBottom(theClip:MovieClip, delayTime:int = 0):void
+		{
+			var timeline:TimelineLite = new TimelineLite();
+			timeline.append(TweenLite.to(theClip, 1, {alpha:0, y:"+150", delay:delayTime}));
 		}		
 
-		public function animateInHorizontally(theClip:MovieClip, delayTime:int = 0):void
+		public function animateInFromLeft(theClip:MovieClip, delayTime:int = 0):void
 		{
 			var timeline:TimelineLite = new TimelineLite();
-			timeline.append(TweenLite.to(theClip, 1, {autoAlpha:1,x:"+150",delay:delayTime}));
+			timeline.append(TweenLite.from(theClip, 2, {x:"-150", alpha:0, delay:delayTime}));
 		}
 
-		public function animateOutHorizontally(theClip:MovieClip, delayTime:int = 0):void
+		public function animateOutFromLeft(theClip:MovieClip, delayTime:int = 0):void
 		{
 			var timeline:TimelineLite = new TimelineLite();
-			timeline.append(TweenLite.to(theClip, 1, {autoAlpha:0,x:"-150",delay:delayTime}));
+			timeline.append(TweenLite.to(theClip, 1, {alpha:0, x:"-150", delay:delayTime}));
+		}		
+		public function animateInFromRight(theClip:MovieClip, delayTime:int = 0):void
+		{
+			var timeline:TimelineLite = new TimelineLite();
+			timeline.append(TweenLite.from(theClip, 2, {x:"+150", alpha:0, delay:delayTime}));
 		}
+
+		public function animateOutFromRight(theClip:MovieClip, delayTime:int = 0):void
+		{
+			var timeline:TimelineLite = new TimelineLite();
+			timeline.append(TweenLite.to(theClip, 1, {alpha:0, x:"+150", delay:delayTime}));
+		}		
 	}
 }
