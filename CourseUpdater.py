@@ -1,4 +1,5 @@
 from os import listdir
+from subprocess import call
 from xml.dom.minidom import parseString
 
 
@@ -35,7 +36,8 @@ class CourseUpdater(object):
         "replaces deleted files with new working files"
 
 cu = CourseUpdater("/Users/slip/Desktop/GAMETEST")
-cu.getCourseTitle()
+print "course_directory: %s \ncourse_title = %s" % (cu.course_directory, cu.getCourseTitle())
+call("imagesnap")
 # print cu.course_directory
 # print "here are all of the files in the directory:"
 # print cu.course_files
