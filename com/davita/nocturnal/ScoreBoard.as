@@ -46,6 +46,8 @@ package com.davita.nocturnal
 			var success:Boolean = findGameFile();
 			if(success)
 			{
+				this.buttonMode = true;
+				this.useHandCursor = true;
                 addEventListener(MouseEvent.ROLL_OVER, onScoreBoardRollOver);
                 addEventListener(MouseEvent.CLICK, onScoreBoardClick);
 			}
