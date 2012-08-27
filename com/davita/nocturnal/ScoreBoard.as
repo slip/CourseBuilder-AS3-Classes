@@ -4,10 +4,12 @@ package com.davita.nocturnal
 	import flash.events.*;
 	import flash.utils.Timer;
 	import com.greensock.TweenLite;
+
 	/**
-	 * ...
+	 * ScoreBoard for CourseFileNocturnalGame
 	 * @author Ian Kennedy
 	 */
+
 	public class ScoreBoard extends MovieClip
 	{
 
@@ -31,7 +33,6 @@ package com.davita.nocturnal
 				addEventListener(Event.ADDED_TO_STAGE,init);
 			}
 		}
-		
 	
 		//---------------------------------------
 		// PRIVATE METHODS
@@ -70,6 +71,10 @@ package com.davita.nocturnal
             return false;
         }
         
+		//---------------------------------------
+		// PUBLIC METHODS
+		//---------------------------------------
+
 		public function open():void
 		{
 			trace("ScoreBoard::openScoreBoard()");
@@ -84,7 +89,7 @@ package com.davita.nocturnal
 			TweenLite.to(this, 1, {x:-225});
 		}
 
-		public function delayClose( seconds:int )
+		public function delayClose(seconds:int)
 		{
 			var myTimer:Timer = new Timer(seconds * 1000,1);
 			myTimer.addEventListener(TimerEvent.TIMER, close);
@@ -126,13 +131,8 @@ package com.davita.nocturnal
 
         private function onScoreBoardRollOver(event:MouseEvent):void
         {
-			trace("ScoreBoard::onScoreBoardRollOver()");
+			// trace("ScoreBoard::onScoreBoardRollOver()");
         }
 
-		//---------------------------------------
-		// PUBLIC METHODS
-		//---------------------------------------
-
-		
 	}
 }
