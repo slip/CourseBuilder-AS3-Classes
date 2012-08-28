@@ -14,7 +14,7 @@ class CourseUpdater(object):
 
     def __init__(self, course_directory):
         "initialize a new CourseUpdater instance"
-        self.course_directory = sys.argv[1]
+        self.course_directory = course_directory
         self.course_files = os.listdir(self.course_directory)
 
     def get_course_title(self):
@@ -29,20 +29,19 @@ class CourseUpdater(object):
     def remove_old_files(self):
         "deletes legacy lms files to be replaced"
         for keeper in self.files_to_keep:
-            print "removing %s from %s" % (keeper, self.course_files)
             self.course_files.remove(keeper)
         for file in self.course_files:
             file = os.path.join(self.course_directory, file)
-            print "deleting %s from %s" % (file, self.course_files)
-            os.remove(file)
+            if os.path.exists(file):
+                print "deleting %s" % os.path.basename(file)
+                os.remove(file)
 
     def add_new_files(self):
         "replaces deleted files with new working files"
 
 
 def main():
-    cu = CourseUpdater("/Users/slip/Desktop/GAMETEST_copy")
-    print "course_directory: %s \ncourse_title = %s" % (cu.course_directory, cu.get_course_title())
+    cu = CourseUpdater(sys.argv[1])
     cu.remove_old_files()
 
 if __name__ == '__main__':
