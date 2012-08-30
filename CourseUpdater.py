@@ -13,36 +13,40 @@ class CourseUpdater(object):
     course_title = ""
 
     def __init__(self, course_directory):
-        "initialize a new CourseUpdater instance"
-        self.course_directory = sys.argv[1]
+        """initialize a new CourseUpdater instance"""
+        self.course_directory = course_directory
         self.course_files = os.listdir(self.course_directory)
+        self.get_course_title()
 
     def get_course_title(self):
-        "traverse imsmanifest.xml and extract the course title"
+        """traverse imsmanifest.xml and extract the course title"""
         manifestLocation = os.path.join(self.course_directory, "imsmanifest.xml")
         manifestFile = open(manifestLocation, 'r')
         manifestData = manifestFile.read()
         manifestFile.close()
         manifestDom = parseString(manifestData)
-        self.course_title = manifestDom.getElementsByTagName('title')[0].firstChild.data
+        self.course_title = manifestDom.getElementsByTagName('title')[1].firstChild.wholeText
 
     def remove_old_files(self):
-        "deletes legacy lms files to be replaced"
+        """deletes legacy lms files to be replaced"""
         for keeper in self.files_to_keep:
-            print "removing %s from %s" % (keeper, self.course_files)
-            self.course_files.remove(keeper)
+            if os.path.exists(keeper):
+                self.course_files.remove(keeper)
         for file in self.course_files:
             file = os.path.join(self.course_directory, file)
-            print "deleting %s from %s" % (file, self.course_files)
-            os.remove(file)
+            if os.path.exists(file):
+                print "deleting %s" % os.path.basename(file)
+#                os.remove(file)
 
     def add_new_files(self):
-        "replaces deleted files with new working files"
+        """replaces deleted files with new working files"""
+        pass
 
 
 def main():
-    cu = CourseUpdater("/Users/slip/Desktop/GAMETEST_copy")
-    print "course_directory: %s \ncourse_title = %s" % (cu.course_directory, cu.get_course_title())
+    cu = CourseUpdater(sys.argv[1])
+    cu.get_course_title()
+    print cu.course_title
     cu.remove_old_files()
 
 if __name__ == '__main__':
