@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2009 Normal Software.  All rights reserved.  
+Copyright (c) 2009 Normal Software.  All rights reserved.
 The copyrights embodied in the content of this file are licensed under the BSD (revised) open source license
 */
 package com.davita.documents {
@@ -10,15 +10,15 @@ package com.davita.documents {
 	import flash.utils.Timer;
 	import flash.ui.*;
 	import flash.media.SoundMixer;
-	
+
 	import com.davita.events.*;
 	import com.davita.buttons.*;
 	import com.davita.utilities.CBAnimator;
     import com.davita.utilities.Console;
-	
+
 	import com.greensock.*;
-    import com.greensock.easing.*;	
-	
+    import com.greensock.easing.*;
+
 	import com.yahoo.astra.fl.managers.AlertManager;
 	/**
 	 *	All loaded swfs should have these properties and methods.
@@ -32,7 +32,7 @@ package com.davita.documents {
 	 *	@since  22.02.2008
 	 */
 	public class CourseSwf extends MovieClip {
-		
+
 		//--------------------------------------
 		// CLASS CONSTANTS
 		//--------------------------------------
@@ -43,19 +43,19 @@ package com.davita.documents {
 		private var __courseWrapper:Object;
 		public var animator:CBAnimator;
         public var console:Console = new Console();
-		
+
 		/**
 		 *	the audio transcription to be used in the closed captions.
 		 */
 		private var _ccText:String;
 		public var hasAudio:Boolean = new Boolean();
-						
+
 		/**
          * Private property to internally keep track of whether or
          * not the current movie clip is being played
          */
 		private var _isPlaying:Boolean = true;
-		
+
 		/**
          * Getter function creating a public, read-only isPlaying
          * property allowing users to get but not set the _isPlaying
@@ -64,11 +64,11 @@ package com.davita.documents {
         public function get isPlaying():Boolean {
             return _isPlaying;
         }
-		
+
 		//--------------------------------------
 		//  CONSTRUCTOR
 		//--------------------------------------
-		
+
 		/**
 		 *	@Constructor
 		 */
@@ -86,7 +86,7 @@ package com.davita.documents {
 
 			drawBackground();
 			maskPage();
-			
+
 			// find the wrapper and add listeners
 			var success:Boolean = findWrapper();
 			if(success)
@@ -95,37 +95,36 @@ package com.davita.documents {
 				this.hasAudio = false;
 				trace("CourseSwf::initialize(): wrapper found");
 			}
-						
 		}
-		
+
 		private function findWrapper():Boolean
 		{
 			var curParent:DisplayObjectContainer = this.parent;
-			while (curParent) 
-			{ 
-				if (curParent.hasOwnProperty("versionNumber") && curParent.hasOwnProperty("currentPage")) 
-				{ 
+			while (curParent)
+			{
+				if (curParent.hasOwnProperty("versionNumber") && curParent.hasOwnProperty("currentPage"))
+				{
 					__courseWrapper = curParent;
 					trace("CourseSwf:: found the wrapper");
 					return true;
-					// Object(curParent).loader.addEventListener("unload", dispose, false, 0, true); 
+					// Object(curParent).loader.addEventListener("unload", dispose, false, 0, true);
 				}
 				curParent = curParent.parent;
 			}
 			trace("CourseSwf:: not in a wrapper");
 			return false;
 		}
-		
+
 		private function dealloc(event:Event):void
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, dealloc);
 			SoundMixer.stopAll();
 		}
-		
+
 		/* =========================== */
 		/* = course gating functions = */
 		/* =========================== */
-		
+
 		public function gateCourse():void
 		{
 			if (__courseWrapper)
@@ -133,8 +132,8 @@ package com.davita.documents {
 				__courseWrapper.setCourseAsGated();
 			}
 		}
-		
-		
+
+
 		public function openGate():void
 		{
 			if (__courseWrapper)
@@ -142,11 +141,11 @@ package com.davita.documents {
 				__courseWrapper.openGate();
 			}
 		}
-		
+
 		/* =================== */
 		/* = draw background = */
 		/* =================== */
-		
+
 		private function drawBackground():void
 		{
 			_background.graphics.beginFill(0x86ACC6);
@@ -154,11 +153,11 @@ package com.davita.documents {
 			_background.graphics.endFill();
 			addChildAt(_background, 0);
 		}
-		
+
         /**
          * changes background color
          **/
-		public function changeBgColor(color:uint):void 
+		public function changeBgColor(color:uint):void
 		{
 			removeChildAt(0);
 			_background.graphics.beginFill(color);
@@ -166,7 +165,7 @@ package com.davita.documents {
 			_background.graphics.endFill();
 			addChildAt(_background, 0);
 		}
-		
+
         /**
          * removes the background
          * useful for falcon courses
@@ -190,7 +189,7 @@ package com.davita.documents {
 			addChild(_pageMask);
 			this.mask = _pageMask;
 		}
-		
+
 	 	/* ============================ */
 	 	/* = closed caption functions = */
 	 	/* ============================ */
@@ -199,22 +198,22 @@ package com.davita.documents {
 		 *	getter for closed caption text
 		 *	@return String
 		 */
-		public function getCcText():String 
-		{ 
-			return _ccText; 
+		public function getCcText():String
+		{
+			return _ccText;
 		}
 
 		/**
 		 *	setter for closed caption text
 		 *	@param	value	 the audio transcription
 		 */
-		public function setCcText( value:String ):void 
-		{			
+		public function setCcText( value:String ):void
+		{
 			if( value != _ccText )
 			{
 				_ccText = value;
 				dispatchEvent(new CaptionEvent(CaptionEvent.CAPTION_CHANGED, _ccText));
 			}
-		}		
+		}
 	}
 }
