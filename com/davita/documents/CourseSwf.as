@@ -40,7 +40,7 @@ package com.davita.documents {
 		private var _background:Sprite = new Sprite();
 		private var _backgroundRemoved:Boolean = false;
 
-		private var __courseWrapper:Object;
+		public var __courseWrapper:Object;
 		public var animator:CBAnimator;
         public var console:Console = new Console();
 
