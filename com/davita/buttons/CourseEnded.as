@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2009 Normal Software.  All rights reserved.  
+Copyright (c) 2009 Normal Software.  All rights reserved.
 The copyrights embodied in the content of this file are licensed under the BSD (revised) open source license
 */
 package com.davita.buttons
@@ -11,50 +11,39 @@ package com.davita.buttons
 	public class CourseEnded extends MovieClip
 	{
 		/*
-			TODO change _myParent to findCourseSwf() function 
+			TODO change _myParent to findCourseSwf() function
 			{ use the same method as findWrapper()}
 		*/
-		var _myParent:Object;
-		var completeMethod:String = "LMSSetComplete";		
-		
+		public var __courseWrapper:Object;
+
 		public function CourseEnded()
 		{
-			_myParent = (this.parent as MovieClip);
-			_myParent.stop();
-			
-			if(completeMethod in _myParent)
+			this.parent.stop();
+			// find the wrapper and add listeners
+			var success:Boolean = findWrapper();
+			if(success)
 			{
-			    _myParent.LMSSetComplete();
+				__courseWrapper.LMSSetComplete();
+				trace("CourseEnded::initialize(): wrapper found");
 			}
-			else if (completeMethod in _myParent.parent)
-			{
-				_myParent.parent.LMSSetComplete();
-			}			
 		}
-		
-		public function getWrapper():Object {
-			var wrapper:Object;
-			var completeMethod:String = "LMSSetComplete";
-			
-			if (completeMethod in this.parent)
+
+		private function findWrapper():Boolean
+		{
+			var curParent:DisplayObjectContainer = this.parent;
+			while (curParent)
 			{
-				wrapper = this.parent;
-				return wrapper;
+				if (curParent.hasOwnProperty("versionNumber") && curParent.hasOwnProperty("currentPage"))
+				{
+					__courseWrapper = curParent;
+					trace("CourseEnded:: found the wrapper");
+					return true;
+					// Object(curParent).loader.addEventListener("unload", dispose, false, 0, true);
+				}
+				curParent = curParent.parent;
 			}
-			else if (completeMethod in this.parent.parent)
-			{
-				wrapper = this.parent.parent;
-				return wrapper;
-			}
-			else if (completeMethod in this.parent.parent.parent)
-			{
-				wrapper = this.parent.parent.parent;
-				return wrapper;
-			}
-			else
-			{
-				return null;
-			}	
-		}		
+			trace("CourseEnded:: not in a wrapper");
+			return false;
+		}
 	}
 }
