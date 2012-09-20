@@ -111,6 +111,7 @@ package com.davita.documents {
 				}
 				curParent = curParent.parent;
 			}
+			__courseWrapper = null;
 			trace("CourseSwf:: not in a wrapper");
 			return false;
 		}
