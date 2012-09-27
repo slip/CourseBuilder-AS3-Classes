@@ -4,3 +4,5 @@ com/greensock
 com/gskinner
 com/yahoo
 *.pyc
+*.sublime-project
+*.sublime-workspace
