@@ -30,12 +30,6 @@ package com.davita.documents
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.display.*;
 
-	/* =========== */
-	/* = testing = */
-	/* =========== */
-	import com.davita.test_interactions.TestEvent;
-
-
 	/**
 	 *  base class for the davita course wrapper.
 	 *	The main application class for all DaVita courses.
@@ -163,11 +157,6 @@ package com.davita.documents
 					}
 					// --- Get SCORM data as needed -----
 
-					course.student_id = scorm.get("cmi.core.student_id");
-					console("scorm.get('cmi.core.student_id'): " +course.student_id);
-
-					course.student_name = scorm.get("cmi.core.student_name");
-					console("scorm.get('cmi.core.student_name'): " +course.student_name);
 				}
 
 			} else {
@@ -217,23 +206,11 @@ package com.davita.documents
             removeDefaultMenuItems();
             addMenuItems();
             this.contextMenu = myContextMenu;
-
-			/* =========== */
-			/* = testing = */
-			/* =========== */
-			addEventListener(TestEvent.TEST_CHANGED, updateTestInteractions);
-
 		}
 
 		/* =========== */
 		/* = testing = */
 		/* =========== */
-
-		private function updateTestInteractions(event:TestEvent):void
-		{
-			trace("got a TestEvent");
-			trace(event.toString());
-		}
 
 		private function console(msg):void
 		{
