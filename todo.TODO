@@ -1,0 +1,2 @@
+ ☐ refactor CourseWrappers. One Base wrapper w/ all functionality. Special wrappers should extend.
+ 
