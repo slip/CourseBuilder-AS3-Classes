@@ -34,7 +34,7 @@ package com.davita.documents
 	 *  base class for the davita course wrapper.
 	 *	The main application class for all DaVita courses.
 	 *  It is set as the base class of course.swf and contains the TableOfContents,
-	 *  course navigation buttons, Help, Search, and ClosedCaption.
+	 *  course navigation buttons, Help, Search.
 	 *
 	 *
 	 * 	@langversion ActionScript 3
@@ -84,7 +84,6 @@ package com.davita.documents
 		public var tableOfContents = new TableOfContents();
 		public var help:Help = new Help();
 		public var search:Search = new Search();
-		public var closedCaption:ClosedCaption = new ClosedCaption();
 
 		// review section variables
 		public var _reviewInfo:Array = new Array();
@@ -171,7 +170,7 @@ package com.davita.documents
 			xmlLoader.addEventListener(IOErrorEvent.IO_ERROR, xmlLoaderErrorHandler);
 
 			// add buttons to the courseNavButtonSet ButtonSet and place them on the stage
-			courseNavButtonSet.addButtons([contents_btn, prev_btn, reload_btn, next_btn, help_btn, search_btn, closedCaption_btn]);
+			courseNavButtonSet.addButtons([contents_btn, prev_btn, reload_btn, next_btn, help_btn, search_btn]);
 			addChild(courseNavButtonSet);
 
 			popupButtonSet.addButtons([contents_btn, help_btn, search_btn]);
@@ -181,7 +180,6 @@ package com.davita.documents
 			contents_btn.addEventListener(MouseEvent.CLICK, togglePage);
 			help_btn.addEventListener(MouseEvent.CLICK, togglePage);
 			search_btn.addEventListener(MouseEvent.CLICK, togglePage);
-			closedCaption_btn.addEventListener(MouseEvent.CLICK, toggleCC);
 
 			// these work because we've named the close button "popupName"_btn
 			tableOfContents.contents_btn.addEventListener(MouseEvent.CLICK, togglePage);
@@ -199,7 +197,6 @@ package com.davita.documents
 
 			// top level event handlers
 			addEventListener(CourseEvent.PAGE_CHANGED, updateCourseStatus);
-			addEventListener(CaptionEvent.CAPTION_CHANGED, closedCaption.updateCaption);
 			addEventListener(ReviewEvent.REVIEW_CHANGED, updateReviewInfo);
 
             // contextMenu
@@ -407,13 +404,6 @@ package com.davita.documents
 			// set the page title
 			setPageTitle(xmlPages[currentPage].@title);
 			setTitleText();
-
-			// if the closed caption is open, close it.
-			// if closedCaption is visible, hide it
-			if (closedCaption.isVisible)
-			{
-				closedCaption.hideCC();
-			}
 
 			// update the table of contents by passing along the event
 			tableOfContents.updateToc(event);
@@ -654,19 +644,6 @@ package com.davita.documents
 			}
 		}
 
-		/**
-		 *	shows and hides the closed captions
-		 */
-		function toggleCC(event:MouseEvent):void
-		{
-			if (!closedCaption.isVisible){
-				addChild(closedCaption);
-				closedCaption.showCC();
-			} else {
-				closedCaption.hideCC();
-			}
-		}
-
 		//
 		// button and buttonSet helpers
 		//
@@ -680,7 +657,6 @@ package com.davita.documents
 			next_btn.removeEventListener(MouseEvent.CLICK, nextPage);
 			prev_btn.removeEventListener(MouseEvent.CLICK, previousPage);
 			reload_btn.removeEventListener(MouseEvent.CLICK, reloadPage);
-			closedCaption_btn.removeEventListener(MouseEvent.CLICK, toggleCC);
 
 			// loop through the courseNavButtonSet
 			for each (var b:MovieClip in courseNavButtonSet.buttons){
@@ -710,7 +686,6 @@ package com.davita.documents
 			next_btn.addEventListener(MouseEvent.CLICK, nextPage);
 			prev_btn.addEventListener(MouseEvent.CLICK, previousPage);
 			reload_btn.addEventListener(MouseEvent.CLICK, reloadPage);
-			closedCaption_btn.addEventListener(MouseEvent.CLICK, toggleCC);
 
 			// loop through the courseNavButtonSet and enable the buttons
 			for each (var b:MovieClip in courseNavButtonSet.buttons)
