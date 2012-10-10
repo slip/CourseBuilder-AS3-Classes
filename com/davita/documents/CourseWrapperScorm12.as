@@ -29,6 +29,8 @@ package com.davita.documents
 	import com.greensock.loading.*;
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.display.*;
+	import com.junkbyte.console.Cc;
+
 
 	/**
 	 *  base class for the davita course wrapper.
@@ -124,6 +126,10 @@ package com.davita.documents
 		/* ======================= */
 		private function init(event:Event):void
 		{
+			Cc.config.commandLineAllowed = true;
+			Cc.config.tracing = true;
+			Cc.config.maxLines = 2000;
+			Cc.start(this, "dbf");
 
 			success = scorm.connect();
 			console("scorm.connect(): " + success);
@@ -135,8 +141,8 @@ package com.davita.documents
 
 				//If course has already been completed
 				if(course.lesson_status == "passed" || course.lesson_status == "completed"){
-
-					console("You have already completed this course.");
+					var debugAlertText = "You have already completed this course.";
+					AlertManager.createAlert(this, debugAlertText);
 
 					//Disconnect from the LMS.
 					scorm.disconnect();
