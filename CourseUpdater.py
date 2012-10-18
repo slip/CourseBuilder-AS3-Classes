@@ -1,7 +1,14 @@
 #!/usr/bin/python
 
-import sys
+"""Usage: CourseUpdater.py <course_directory> [-h -v]
+
+-h --help    show this
+-v --version    0.5
+
+"""
+
 import os
+from docopt import docopt
 from xml.dom.minidom import parseString
 
 
@@ -43,11 +50,9 @@ class CourseUpdater(object):
         pass
 
 
-def main():
-    cu = CourseUpdater(sys.argv[1])
-    cu.get_course_title()
-    print cu.course_title
-    cu.remove_old_files()
-
 if __name__ == '__main__':
-    main()
+    arguments = docopt(__doc__, version='0.5')
+    print(arguments)
+    cu = CourseUpdater(arguments['<course_directory>'])
+    cu.get_course_title()
+    cu.remove_old_files()
