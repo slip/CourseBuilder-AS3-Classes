@@ -5,6 +5,7 @@ The copyrights embodied in the content of this file are licensed under the BSD (
 package com.davita.documents {
 	import flash.display.*;
 	import flash.events.*;
+	import flash.geom.Matrix;
 	import fl.motion.easing.*;
 	import flash.text.*;
 	import flash.utils.Timer;
@@ -178,6 +179,16 @@ package com.davita.documents {
 				removeChildAt(0);
 			}
 			this._backgroundRemoved = true;
+			var filltype:String = GradientType.LINEAR;
+            var colors:Array = [0x000000, 0x20201f];
+            var alphas:Array = [1,1];
+            var ratios:Array = [127, 255];
+            var matrix:Matrix = new Matrix();
+            matrix.createGradientBox(200, 700, Math.PI/2, 0, 1);
+
+            _background.graphics.beginGradientFill(filltype, colors, alphas, ratios, matrix);
+			_background.graphics.drawRect(0,0,1000,600);
+			addChildAt(_background, 0);
         }
 
 		/**
