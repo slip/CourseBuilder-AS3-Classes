@@ -34,7 +34,7 @@ package com.davita.documents
 	public dynamic class CourseInteractionCombined extends CourseSwf
 	{
 		public var interactions:Array = new Array();
-		
+		public var sndChannel; // does nothing, but helps lesson ended find the id
 		/**
 		 *	constructor
 		 */
