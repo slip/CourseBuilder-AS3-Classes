@@ -261,15 +261,14 @@ package com.davita.documents
 		/**
 		 *	loads the requested page and dispatches a PAGE_CHANGED event
 		 */
-        public function unloadAndDestroy():void
-        {
-			var myLoadedSWF = queue.rawContent as MovieClip;
-
-			SoundMixer.stopAll();
-            queue.unload();
-            queue.dispose();
-            queue = null;
-        }
+    public function unloadAndDestroy():void
+    {
+      var myLoadedSWF = queue.rawContent as MovieClip;
+      SoundMixer.stopAll();
+      queue.unload();
+      queue.dispose();
+      queue = null;
+    }
 
 		public function loadPage(page:int):void
 		{
